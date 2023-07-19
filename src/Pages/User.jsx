@@ -1,8 +1,11 @@
 import React from "react"
 import { useState } from "react"
+import { useSelector } from "react-redux"
 
 function User() {
   const [formVisible, setFormVisible] = useState(false)
+
+  const user = useSelector((state) => state.userReducer)
 
   function onClickCancel() {
     setFormVisible(!formVisible)
@@ -25,14 +28,14 @@ function User() {
                     type="text"
                     id="firstName"
                     name="firstName"
-                    placeholder="Tony"
+                    placeholder={user.firstName}
                     required
                   />
                   <input
                     type="text"
                     id="lastName"
                     name="lasrName"
-                    placeholder="Jarvis"
+                    placeholder={user.lastName}
                     required
                   />
                 </div>
@@ -61,7 +64,7 @@ function User() {
             <h1>
               Welcome back
               <br />
-              Tony Jarvis!
+              {user.firstName} {user.lastName}
             </h1>
             <button
               onClick={() => setFormVisible(!formVisible)}

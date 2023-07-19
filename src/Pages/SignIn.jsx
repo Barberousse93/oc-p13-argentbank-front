@@ -1,12 +1,25 @@
-import React, { useState } from "react"
+import React, {
+  useState,
+  // useEffect
+} from "react"
+import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons"
-import { postData } from "../Utils/postData.js"
+import { getToken } from "../actions/getToken.action"
+import { store } from "../index.js"
+import { useSelector } from "react-redux"
 
 function SignIn() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [checked, setChecked] = useState(false)
+  const navigate = useNavigate()
+  const user = useSelector((state) => state.userReducer)
+  const userConnected = user.isConnected
+
+  if (userConnected) {
+    navigate("/user")
+  }
 
   const handleEmail = (e) => {
     setEmail(e.target.value)
@@ -23,38 +36,10 @@ function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault()
     const formDatas = { email: email, password: password }
-
-    postData("http://localhost:3001/api/v1/user/login", formDatas).then(
-      (data) => {
-        // console.log(data) // JSON data parsed by `data.json()` call
-        alert(data.message)
-        if (data.status === 200) {
-          if (checked) {
-            localStorage.setItem("ArgentBankToken", data.body.token)
-          } else {
-            localStorage.removeItem("ArgentBankToken")
-          }
-
-          console.log("token stocké :", localStorage.getItem("ArgentBankToken"))
-
-          const autorisation = { Authorization: `Bearer ${data.body.token}` }
-          postData(
-            "http://localhost:3001/api/v1/user/profile",
-            autorisation
-          ).then((userProfile) => {
-            console.log(userProfile)
-            alert(
-              "Welcome back " +
-                userProfile.body.firstName +
-                " " +
-                userProfile.body.lastName +
-                " !"
-            )
-          })
-        }
-      }
-    )
+    store.dispatch(getToken(formDatas, checked))
   }
+
+  
 
   return (
     <main className="main bg-dark">
