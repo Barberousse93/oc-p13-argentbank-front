@@ -1,11 +1,16 @@
-import React from "react";
+import React from "react"
+import MainNav from './Containers/MainNav.jsx'
+import Routeur from "./Router"
+import Footer from './Components/Footer.jsx'
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello World !</h1>
+      <MainNav/>
+      <Routeur />
+      <Footer/>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
