@@ -1,13 +1,11 @@
-import React, {
-  useState,
-  // useEffect
-} from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons"
 import { getToken } from "../actions/getToken.action"
 import { store } from "../index.js"
 import { useSelector } from "react-redux"
+import { checkedMemory } from "../actions/checkedMemory.action"
 
 function SignIn() {
   const [email, setEmail] = useState("")
@@ -16,6 +14,14 @@ function SignIn() {
   const navigate = useNavigate()
   const user = useSelector((state) => state.userReducer)
   const userConnected = user.isConnected
+
+  useEffect(() => {
+    if (localStorage.getItem("ArgentBankMemory")) {
+      setEmail(localStorage.getItem("ArgentBankEmail"))
+      setPassword(localStorage.getItem("ArgentBankPW"))
+      setChecked(true)
+    }
+  }, [])
 
   if (userConnected) {
     navigate("/user")
@@ -36,10 +42,16 @@ function SignIn() {
   const handleSubmit = (e) => {
     e.preventDefault()
     const formDatas = { email: email, password: password }
-    store.dispatch(getToken(formDatas, checked))
+    store.dispatch(checkedMemory(checked))
+    store.dispatch(getToken(formDatas))
+    if (checked) {
+      localStorage.setItem("ArgentBankEmail", email)
+      localStorage.setItem("ArgentBankPW", password)
+    } else {
+      localStorage.removeItem("ArgentBankEmail")
+      localStorage.removeItem("ArgentBankPW")
+    }
   }
-
-  
 
   return (
     <main className="main bg-dark">

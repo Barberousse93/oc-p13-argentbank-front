@@ -5,7 +5,7 @@ import { store } from '../index.js'
 export const GET_TOKEN = "GET_TOKEN"
 
 
-export const getToken = (formDatas,checked) => {
+export const getToken = (formDatas) => {
     return (dispatch) => { 
         postData("http://localhost:3001/api/v1/user/login", formDatas).then(
             (data) => {
@@ -14,12 +14,6 @@ export const getToken = (formDatas,checked) => {
                     // console.log(data.body.token)
 
                     dispatch({ type: GET_TOKEN, payload: data.body.token })
-                    
-                    if (checked) {
-                        localStorage.setItem("ArgentBankToken", data.body.token)
-                    } else {
-                        localStorage.removeItem("ArgentBankToken")
-                    }
                     store.dispatch(getUser(data.body.token))
                 }
             })

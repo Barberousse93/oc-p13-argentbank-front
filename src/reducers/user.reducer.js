@@ -1,6 +1,7 @@
 import { GET_TOKEN } from '../actions/getToken.action.js'
 import { GET_USER } from '../actions/getUser.action.js'
 import { SIGN_OUT } from '../actions/signOut.action.js'
+import { MEMORY } from '../actions/checkedMemory.action.js'
 
 const initialState = {
     firstName: "",
@@ -9,20 +10,18 @@ const initialState = {
     id: "",
     token: "",
     isConnected: false,
+    rememberMe: false
 }
 
 export default function userReducer(state = initialState, action) {
-    // console.log('action', action.type)
     switch (action.type) {
         case GET_TOKEN:
-            // console.log('action.payload',action.payload)
             return {
                 ...state,
                 token: action.payload,
                 isConnected:true
             }
         case GET_USER:
-            // console.log('action.payload',action.payload.body.email)
             return {
                 ...state,
                 id:action.payload.body.id,
@@ -31,7 +30,13 @@ export default function userReducer(state = initialState, action) {
                 email:action.payload.body.email
             }
         case SIGN_OUT:
-            return initialState
+            return {initialState}
+        case MEMORY:
+            return {
+                ...state,
+                rememberMe: action.payload
+            }
+                
         default:
             return state            
     }

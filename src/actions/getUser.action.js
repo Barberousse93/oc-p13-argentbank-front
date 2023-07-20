@@ -9,9 +9,7 @@ export const getUser = (token) => {
             "http://localhost:3001/api/v1/user/profile",
             autorisation
         ).then((userProfile) => {
-            // console.log('userProfile',userProfile)
-            dispatch({ type: GET_USER, payload: userProfile })
-            // navigate('/user')
+            dispatch({ type: GET_USER, payload: userProfile })            
         })
           
     }
