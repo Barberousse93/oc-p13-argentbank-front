@@ -1,11 +1,21 @@
 import React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router"
 
 function User() {
   const [formVisible, setFormVisible] = useState(false)
 
   const user = useSelector((state) => state.userReducer)
+
+  const userConnected = user.isConnected
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!userConnected) {
+      navigate("/")
+    }
+  }, [])
 
   function onClickCancel() {
     setFormVisible(!formVisible)

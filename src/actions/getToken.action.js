@@ -9,12 +9,13 @@ export const getToken = (formDatas) => {
     return (dispatch) => { 
         postData("http://localhost:3001/api/v1/user/login", formDatas).then(
             (data) => {
-                alert(data.message)
+                // alert(data.message)
                 if (data.status === 200) {
-                    // console.log(data.body.token)
-
                     dispatch({ type: GET_TOKEN, payload: data.body.token })
                     store.dispatch(getUser(data.body.token))
+                } else {
+                    alert(data.message)
+                    alert('Utilisateur inconnu ou mot de passe  incorrect')
                 }
             })
         

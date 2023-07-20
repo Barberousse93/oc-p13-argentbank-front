@@ -1,7 +1,5 @@
-export async function postData(url = "", data = {}) {
+export async function postData(url = "", data = {}, Authorization='') {
   // Default options are marked with *
-    
-  // console.log('url, data',url, data)
   const response = await fetch(url, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin
@@ -10,7 +8,7 @@ export async function postData(url = "", data = {}) {
     headers: {
       "Content-Type": "application/json",
       // 'Content-Type': 'application/x-www-form-urlencoded',
-        "Authorization": data && data.Authorization ? data.Authorization : '',
+        "Authorization": Authorization ? Authorization : '',
     },
     redirect: "follow", // manual, *follow, error
     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url

@@ -6,6 +6,7 @@ import { getToken } from "../actions/getToken.action"
 import { store } from "../index.js"
 import { useSelector } from "react-redux"
 import { checkedMemory } from "../actions/checkedMemory.action"
+import { AES, enc } from "crypto-js"
 
 function SignIn() {
   const [email, setEmail] = useState("")
@@ -18,7 +19,12 @@ function SignIn() {
   useEffect(() => {
     if (localStorage.getItem("ArgentBankMemory")) {
       setEmail(localStorage.getItem("ArgentBankEmail"))
-      setPassword(localStorage.getItem("ArgentBankPW"))
+      // Dechiffrement PW
+      const EncrytpedPW = localStorage.getItem("ArgentBankPW")
+      const bytes = AES.decrypt(EncrytpedPW, "secretKey")
+      const decryptedPW = bytes.toString(enc.Utf8)
+      setPassword(decryptedPW)
+      //
       setChecked(true)
     }
   }, [])
@@ -41,12 +47,15 @@ function SignIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const formDatas = { email: email, password: password }
+    const formDatas = { email, password }
     store.dispatch(checkedMemory(checked))
     store.dispatch(getToken(formDatas))
     if (checked) {
       localStorage.setItem("ArgentBankEmail", email)
-      localStorage.setItem("ArgentBankPW", password)
+      // Chiffrement PW
+      const cipherText = AES.encrypt(password, "secretKey")
+      localStorage.setItem("ArgentBankPW", cipherText)
+      //
     } else {
       localStorage.removeItem("ArgentBankEmail")
       localStorage.removeItem("ArgentBankPW")

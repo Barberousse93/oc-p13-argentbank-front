@@ -9,6 +9,7 @@ import { store } from ".."
 
 function NavItemConnected() {
   const navigate = useNavigate()
+
   const handleSignOut = () => {
     store.dispatch(signOut())
     navigate("/")
