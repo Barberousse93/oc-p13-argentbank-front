@@ -2,13 +2,18 @@ import React from "react"
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router"
+import { store } from ".."
+import { updateUser } from "../actions/updateUser.action"
 
 function User() {
-  const [formVisible, setFormVisible] = useState(false)
-
   const user = useSelector((state) => state.userReducer)
 
+  const [formVisible, setFormVisible] = useState(false)
+  const [firstName, setFirstName] = useState(user.firstName)
+  const [lastName, setlastName] = useState(user.lastName)
+
   const userConnected = user.isConnected
+  const token = user.token
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -19,10 +24,25 @@ function User() {
 
   function onClickCancel() {
     setFormVisible(!formVisible)
+    setFirstName(user.firstName)
+    setlastName(user.lastName)
   }
 
-  function SubmitForm() {
-    alert("Soumission du formulaire")
+  const handleFirstName = (e) => {
+    e.target.value
+      ? setFirstName(e.target.value[0].toUpperCase() + e.target.value.slice(1))
+      : user.firstName
+  }
+
+  const handleLastName = (e) => {
+    e.target.value ? setlastName(e.target.value.toUpperCase()) : user.lastName
+  }
+
+  const SubmitForm = (e) => {
+    e.preventDefault()
+    const formDatas = { token, firstName, lastName }
+    store.dispatch(updateUser(formDatas))
+    setFormVisible(false)
   }
 
   return (
@@ -32,21 +52,21 @@ function User() {
           <>
             <h1>Welcome back</h1>
             <div className="formContainer">
-              <form onSubmit={(e) => (e.preventDefault(), SubmitForm())}>
+              <form onSubmit={SubmitForm}>
                 <div className="inputText">
                   <input
                     type="text"
                     id="firstName"
                     name="firstName"
+                    onChange={handleFirstName}
                     placeholder={user.firstName}
-                    required
                   />
                   <input
                     type="text"
                     id="lastName"
                     name="lasrName"
+                    onChange={handleLastName}
                     placeholder={user.lastName}
-                    required
                   />
                 </div>
                 <div className="inputButtons">
