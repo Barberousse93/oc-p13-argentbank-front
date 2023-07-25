@@ -13,8 +13,12 @@ export const updateUser = (datas) => {
       "http://localhost:3001/api/v1/user/profile",
       { firstName, lastName },
       autorisation
-    ).then(() => {
-      dispatch({ type: UPDATE_USER, payload: datas })
+    ).then((promise) => {
+      if (promise.status === 200) {
+        dispatch({ type: UPDATE_USER, payload: promise.body })
+      } else {
+        alert("Ooops ! Il y a eu un problème !")
+      }
     })
   }
 }

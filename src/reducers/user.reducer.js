@@ -41,10 +41,7 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         firstName: action.payload.firstName,
-        // action.payload.firstName[0].toUpperCase() +
-        // action.payload.firstName.slice(1),
         lastName: action.payload.lastName,
-        // action.payload.lastName.toUpperCase(),
       }
     default:
       return state

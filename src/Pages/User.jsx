@@ -6,15 +6,14 @@ import { store } from ".."
 import { updateUser } from "../actions/updateUser.action"
 
 function User() {
-  const user = useSelector((state) => state.userReducer)
-
   const [formVisible, setFormVisible] = useState(false)
-  const [firstName, setFirstName] = useState(user.firstName)
-  const [lastName, setlastName] = useState(user.lastName)
+  const navigate = useNavigate()
 
+  const user = useSelector((state) => state.userReducer)
+    const [firstName, setFirstName] = useState(user.firstName)
+  const [lastName, setLastName] = useState(user.lastName)
   const userConnected = user.isConnected
   const token = user.token
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (!userConnected) {
@@ -25,22 +24,26 @@ function User() {
   function onClickCancel() {
     setFormVisible(!formVisible)
     setFirstName(user.firstName)
-    setlastName(user.lastName)
+    setLastName(user.lastName)
   }
 
   const handleFirstName = (e) => {
-    e.target.value
-      ? setFirstName(e.target.value[0].toUpperCase() + e.target.value.slice(1))
-      : user.firstName
+    setFirstName(e.target.value[0].toUpperCase() + e.target.value.slice(1))
   }
 
   const handleLastName = (e) => {
-    e.target.value ? setlastName(e.target.value.toUpperCase()) : user.lastName
+    setLastName(e.target.value.toUpperCase())
   }
 
   const SubmitForm = (e) => {
     e.preventDefault()
-    const formDatas = { token, firstName, lastName }
+
+    const formDatas = {
+      token: token,
+      firstName: !firstName ? user.firstName : firstName,
+      lastName: !lastName ? user.lastName : lastName,
+    }
+
     store.dispatch(updateUser(formDatas))
     setFormVisible(false)
   }
@@ -64,7 +67,7 @@ function User() {
                   <input
                     type="text"
                     id="lastName"
-                    name="lasrName"
+                    name="lastName"
                     onChange={handleLastName}
                     placeholder={user.lastName}
                   />
