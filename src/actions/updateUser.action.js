@@ -1,4 +1,4 @@
-import { updateDatas } from "../Utils/updateDatas.js"
+import { postData } from "../Utils/postData.js"
 
 export const UPDATE_USER = "UPDATE_USER"
 
@@ -9,7 +9,8 @@ export const updateUser = (datas) => {
 
   return (dispatch) => {
     const autorisation = `Bearer ${token}`
-    updateDatas(
+    postData(
+      "PUT",
       "http://localhost:3001/api/v1/user/profile",
       { firstName, lastName },
       autorisation

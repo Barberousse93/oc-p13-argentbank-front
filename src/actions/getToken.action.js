@@ -7,7 +7,7 @@ export const GET_TOKEN = "GET_TOKEN"
 
 export const getToken = (formDatas) => {
     return (dispatch) => { 
-        postData("http://localhost:3001/api/v1/user/login", formDatas).then(
+        postData('POST',"http://localhost:3001/api/v1/user/login", formDatas).then(
             (data) => {
                 // alert(data.message)
                 if (data.status === 200) {
