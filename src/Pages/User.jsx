@@ -1,25 +1,16 @@
 import React from "react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useSelector } from "react-redux"
-import { useNavigate } from "react-router"
 import { store } from ".."
 import { updateUser } from "../actions/updateUser.action"
 
 function User() {
   const [formVisible, setFormVisible] = useState(false)
-  const navigate = useNavigate()
 
   const user = useSelector((state) => state.userReducer)
-    const [firstName, setFirstName] = useState(user.firstName)
+  const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
-  const userConnected = user.isConnected
   const token = user.token
-
-  useEffect(() => {
-    if (!userConnected) {
-      navigate("/")
-    }
-  }, [])
 
   function onClickCancel() {
     setFormVisible(!formVisible)

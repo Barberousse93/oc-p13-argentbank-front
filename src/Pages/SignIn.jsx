@@ -29,9 +29,11 @@ function SignIn() {
     }
   }, [])
 
-  if (userConnected) {
-    navigate("/user")
-  }
+  useEffect(() => {
+    if (userConnected) {
+      navigate("/user")
+    }
+  }, [userConnected])
 
   const handleEmail = (e) => {
     setEmail(e.target.value)
