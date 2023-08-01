@@ -7,6 +7,7 @@ import { store } from "../index.js"
 import { useSelector } from "react-redux"
 import { checkedMemory } from "../actions/checkedMemory.action"
 import { AES, enc } from "crypto-js"
+import { validationEmail } from "../Utils/validationEmail.js"
 
 function SignIn() {
   const [email, setEmail] = useState("")
@@ -49,6 +50,9 @@ function SignIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (!validationEmail(email)) {
+      return alert("Adresse eMail invalide")
+    }
     const formDatas = { email, password }
     store.dispatch(checkedMemory(checked))
     store.dispatch(getToken(formDatas))
