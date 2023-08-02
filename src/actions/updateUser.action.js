@@ -7,19 +7,18 @@ export const updateUser = (datas) => {
   const firstName = datas.firstName
   const lastName = datas.lastName
 
-  return (dispatch) => {
+  return async (dispatch) => {
     const autorisation = `Bearer ${token}`
-    postData(
+    const result = await postData(
       "PUT",
       "http://localhost:3001/api/v1/user/profile",
       { firstName, lastName },
       autorisation
-    ).then((promise) => {
-      if (promise.status === 200) {
-        dispatch({ type: UPDATE_USER, payload: promise.body })
-      } else {
-        alert("Ooops ! Il y a eu un problème !")
-      }
-    })
+    )
+    if (result.status === 200) {
+      dispatch({ type: UPDATE_USER, payload: result.body })
+    } else {
+      alert("Ooops ! Il y a eu un problème !")
+    }
   }
 }

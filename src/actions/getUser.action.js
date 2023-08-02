@@ -3,15 +3,18 @@ import { postData } from "../Utils/postData.js"
 export const GET_USER = "GET_USER"
 
 export const getUser = (token) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     const autorisation = `Bearer ${token}`
-    postData(
+    const userProfile = await postData(
       "POST",
       "http://localhost:3001/api/v1/user/profile",
       {},
       autorisation
-    ).then((userProfile) => {
+    )
+    if (userProfile.status === 200) {
       dispatch({ type: GET_USER, payload: userProfile })
-    })
+    } else {
+      alert("Ooops ! Il y a eu un problème...")
+    }
   }
 }
